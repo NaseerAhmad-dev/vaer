@@ -1,0 +1,98 @@
+.page {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(70,65,140,0.06) 0%, transparent 60%),
+    var(--bg);
+}
+
+.card {
+  width: 100%; max-width: 420px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.05);
+  animation: fadeUp 0.5s cubic-bezier(0.4,0,0.2,1) both;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 500;
+  letter-spacing: 0.4em;
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.5rem; opacity: 0.4;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+.divider span { font-size: 10px; letter-spacing: 0.1em; color: var(--gold); }
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 400;
+  color: var(--ivory); margin-bottom: 2rem;
+}
+
+.form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+
+.fieldLabel {
+  display: block; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+
+.btn {
+  padding: 13px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  color: #080808;
+  border-radius: var(--radius);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  margin-top: 6px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+}
+.btn:hover:not(:disabled) {
+  opacity: 0.92; transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(201,168,76,0.35);
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.error {
+  background: rgba(224,82,82,0.08);
+  border: 1px solid rgba(224,82,82,0.25);
+  color: #ffaaaa; font-size: 13px;
+  padding: 11px 14px; border-radius: var(--radius);
+  margin-bottom: 1rem; text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+
+.link { margin-top: 1.75rem; font-size: 13px; color: var(--muted); }
+.link a { color: var(--gold); border-bottom: 1px solid transparent; transition: border-color var(--transition); }
+.link a:hover { border-color: var(--gold); }
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 480px) {
+  .page { padding: 1.25rem; align-items: flex-start; padding-top: 2rem; }
+  .card { padding: 2rem 1.5rem; border-radius: var(--radius); }
+  .title { font-size: 22px; }
+}

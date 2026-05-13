@@ -1,0 +1,68 @@
+.footer {
+  border-top: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%),
+    var(--bg-card);
+  margin-top: auto;
+}
+
+.inner {
+  max-width: 1320px; margin: 0 auto;
+  padding: 4rem 2.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: 3rem;
+}
+@media (max-width: 900px) { .inner { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+@media (max-width: 540px) {
+  .inner { grid-template-columns: 1fr; padding: 3rem 1.25rem 2rem; gap: 2rem; }
+  .brand { padding-right: 0; }
+  .bottom { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1rem 1.25rem; }
+  .bottomLinks { justify-content: center; }
+}
+
+.brand { padding-right: 2rem; }
+.logo {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 500;
+  letter-spacing: 0.35em;
+  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block; margin-bottom: 1rem;
+}
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic; font-size: 15px;
+  color: var(--muted-md); margin-bottom: 0.75rem;
+}
+.copy { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 240px; margin-bottom: 0.75rem; }
+
+.meaning { font-size: 12px; color: var(--muted); opacity: 0.6; }
+.meaningWord { font-family: var(--font-display); font-size: 15px; color: var(--gold); }
+
+.col { display: flex; flex-direction: column; }
+.colTitle {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.25rem; opacity: 0.8;
+}
+.colList { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.colLink {
+  font-size: 13px; color: var(--muted);
+  transition: color var(--transition), padding-left var(--transition);
+  display: inline-block;
+}
+.colLink:hover { color: var(--text); padding-left: 4px; }
+
+.bottom {
+  max-width: 1320px; margin: 0 auto;
+  padding: 1.25rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+  font-size: 12px; color: var(--muted);
+  letter-spacing: 0.03em;
+}
+.bottomLinks { display: flex; align-items: center; gap: 8px; }
+.bottomLinks span { cursor: default; transition: color var(--transition); }
+.bottomLinks span:not(:nth-child(2)):hover { color: var(--text); }
