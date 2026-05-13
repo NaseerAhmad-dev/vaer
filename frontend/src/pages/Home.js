@@ -18,12 +18,18 @@ const VALUES = [
 ];
 
 const CATEGORIES = [
-  { name: 'Electronics',   emoji: '⚡', desc: 'Cutting-edge tech & gadgets' },
-  { name: 'Fashion',       emoji: '◈',  desc: 'Timeless style, modern edge' },
-  { name: 'Home & Decor',  emoji: '◇',  desc: 'Elevate every corner' },
-  { name: 'Beauty',        emoji: '✦',  desc: 'Skincare, fragrance & more' },
-  { name: 'Food',          emoji: '◉',  desc: 'Artisan & gourmet selections' },
-  { name: 'Other',         emoji: '✿',  desc: 'Unique finds & curiosities' },
+  { name: 'Dry Fruits',             emoji: '◉', desc: 'Walnuts, almonds, apricots & more from the valley' },
+  { name: 'Saffron & Spices',       emoji: '✦', desc: 'Pure Kashmiri saffron and hand-ground spices' },
+  { name: 'Honey & Herbal Teas',    emoji: '◇', desc: 'Wild mountain honey and Kashmiri kahwa blends' },
+  { name: 'Pashmina & Shawls',      emoji: '◈', desc: 'Authentic handwoven Pashmina from local artisans' },
+  { name: 'Handicrafts',            emoji: '✿', desc: 'Traditional papier-mâché, woodwork & copperware' },
+  { name: 'Carpets & Rugs',         emoji: '❖', desc: 'Hand-knotted silk and wool carpets' },
+  { name: 'Attar & Natural Oils',   emoji: '◎', desc: 'Pure botanical attars and essential oils' },
+  { name: 'Sports Goods',           emoji: '◬', desc: 'Kashmir-made cricket bats and sporting gear' },
+  { name: 'Fashion & Clothing',     emoji: '◆', desc: 'Kurtis, pherans, and contemporary Kashmiri wear' },
+  { name: 'Home & Kitchen',         emoji: '⬡', desc: 'Copper samovar sets and handcrafted homeware' },
+  { name: 'Beauty & Skincare',      emoji: '✧', desc: 'Saffron creams, walnut scrubs & natural care' },
+  { name: 'Electronics & Accessories', emoji: '⚡', desc: 'Everyday tech and smart accessories' },
 ];
 
 const STATS = [

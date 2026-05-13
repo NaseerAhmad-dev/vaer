@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
 const LINKS = {
-  Shop:    [{ label: 'All Products', to: '/products' }, { label: 'Electronics', to: '/products?category=Electronics' }, { label: 'Fashion', to: '/products?category=Fashion' }, { label: 'Home & Decor', to: '/products?category=Home+%26+Decor' }],
+  Shop:    [{ label: 'All Products', to: '/products' }, { label: 'Dry Fruits', to: '/products?category=Dry+Fruits' }, { label: 'Saffron & Spices', to: '/products?category=Saffron+%26+Spices' }, { label: 'Pashmina & Shawls', to: '/products?category=Pashmina+%26+Shawls' }],
   Account: [{ label: 'Sign In', to: '/login' }, { label: 'Create Account', to: '/register' }, { label: 'My Orders', to: '/orders' }, { label: 'Profile', to: '/profile' }],
   Support: [{ label: 'Contact Us', to: '/#contact' }, { label: 'Returns Policy', to: '/#contact' }, { label: 'Shipping Info', to: '/#contact' }, { label: 'FAQ', to: '/#contact' }],
 };

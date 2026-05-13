@@ -3,7 +3,21 @@ import { productAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import styles from './Products.module.css';
 
-const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Home & Decor', 'Food', 'Beauty', 'Other'];
+const CATEGORIES = [
+  'All',
+  'Dry Fruits',
+  'Saffron & Spices',
+  'Honey & Herbal Teas',
+  'Pashmina & Shawls',
+  'Handicrafts',
+  'Carpets & Rugs',
+  'Attar & Natural Oils',
+  'Sports Goods',
+  'Fashion & Clothing',
+  'Home & Kitchen',
+  'Beauty & Skincare',
+  'Electronics & Accessories',
+];
 
 export default function Products() {
   const [products, setProducts] = useState([]);
