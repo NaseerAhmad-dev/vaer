@@ -1,27 +1,27 @@
-# 🛍️ Vaer — Premium Ecommerce Store
+# 🛍️ Noor — Full-Stack Ecommerce Store
 
-A full-stack ecommerce platform built with React + Node.js/Express + MongoDB.
+A full-stack ecommerce platform built with Angular + Node.js/Express + MongoDB.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-Vaer/
+Noor/
 ├── backend/          ← Node.js + Express API
 │   ├── models/       ← MongoDB schemas (User, Product, Order)
 │   ├── routes/       ← API endpoints
 │   ├── middleware/   ← JWT auth middleware
-│   ├── server.js     ← Entry point
-│   └── .env.example  ← Environment variables template
+│   ├── server.js     ← API entry point
+│   └── .env          ← Environment variables
 │
-└── frontend/         ← React app
+└── frontend/         ← Angular application
+    ├── public/       ← Static assets
     └── src/
-        ├── components/   ← Navbar, ProductCard
-        ├── context/      ← Auth & Cart state
-        ├── pages/        ← Home, Products, Cart, Login, Admin
-        ├── services/     ← Axios API calls
-        └── styles/       ← Global CSS (dark + gold theme)
+        ├── app/      ← Application modules, pages, services
+        ├── styles.css
+        ├── main.ts
+        └── index.html
 ```
 
 ---
@@ -34,8 +34,8 @@ Vaer/
 cd backend
 npm install
 
-# Copy and fill in your environment variables
-cp .env.example .env
+# Create or update your environment file
+copy .env.example .env
 # Edit .env: set MONGO_URI and JWT_SECRET
 
 npm run dev
@@ -48,48 +48,48 @@ npm run dev
 cd frontend
 npm install
 npm start
-# App runs on http://localhost:3000
+# App runs on http://localhost:4200
 ```
 
 ---
 
-## ✅ Features (Base)
+## ✅ Implemented Features
 
-- [x] User registration & login (JWT)
-- [x] Product listing with search, filter by category, pagination
-- [x] Shopping cart (add, remove, update qty)
-- [x] Admin dashboard (stats, order management)
-- [x] Role-based access (customer / admin)
-- [x] Responsive dark premium UI
-
-## 🔜 Coming Next (add one by one)
-
-- [ ] Product detail page
-- [ ] Checkout & order placement
-- [ ] My orders page
-- [ ] Product image upload
-- [ ] Payment integration (Stripe)
-- [ ] Email notifications
-- [ ] Inventory management
-- [ ] Discount codes
+- [x] User registration and login with JWT
+- [x] Product listing with search, category filter, pagination
+- [x] Product detail page
+- [x] Shopping cart with add/remove/update quantity
+- [x] Checkout page
+- [x] Order history and profile pages
+- [x] Admin dashboard and order management
+- [x] Role-based access control (customer / admin)
+- [x] API proxy from Angular to backend
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer    | Tech                        |
-|----------|-----------------------------|
-| Frontend | React 18, React Router v6   |
-| Backend  | Node.js, Express            |
-| Database | MongoDB + Mongoose          |
-| Auth     | JWT + bcryptjs              |
-| Styling  | CSS Modules, custom design  |
+| Layer      | Tech                                   |
+|------------|----------------------------------------|
+| Frontend   | Angular 21, Tailwind CSS, PrimeNG       |
+| Backend    | Node.js, Express, Mongoose             |
+| Database   | MongoDB                                |
+| Auth       | JWT, bcryptjs                          |
+| File Upload| Multer                                 |
 
 ---
 
-## 🔑 First Admin Account
+## 🚦 Notes
 
-After registering a user, set their role to admin directly in MongoDB:
+- Frontend development server uses the Angular proxy config to forward `/api` calls to `http://localhost:5000`.
+- The backend exposes API routes under `/api/products`, `/api/users`, `/api/orders`, `/api/auth`, and `/api/admin`.
+- Make sure MongoDB is running locally before starting the backend.
+
+---
+
+## 🔑 Create Admin User
+
+After registering a normal user, promote the account in MongoDB:
 
 ```js
 db.users.updateOne({ email: "you@example.com" }, { $set: { role: "admin" } })
