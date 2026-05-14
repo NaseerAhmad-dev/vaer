@@ -1,0 +1,35 @@
+<footer class="footer">
+  <div class="inner">
+    <div class="brand">
+      <a routerLink="/" class="logo">NOOR</a>
+      <p class="tagline">Your valley, your store.</p>
+      <p class="copy">A home-grown marketplace rooted in Kashmir — curated with love by Naseer Ahmad.</p>
+      <p class="meaning">
+        <span class="meaningWord">نور</span>
+        · Arabic · Kashmiri for <em>light</em>
+      </p>
+    </div>
+
+    @for (group of linkGroups; track group.title) {
+      <div class="col">
+        <h4 class="colTitle">{{ group.title }}</h4>
+        <ul class="colList">
+          @for (link of group.links; track link.label) {
+            <li>
+              <a [routerLink]="link.path" [queryParams]="link.params" class="colLink">{{ link.label }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+
+  <div class="bottom">
+    <p>© {{ year }} Noor. Made with care in Kashmir.</p>
+    <div class="bottomLinks">
+      <span>Privacy Policy</span>
+      <span>·</span>
+      <span>Terms of Service</span>
+    </div>
+  </div>
+</footer>

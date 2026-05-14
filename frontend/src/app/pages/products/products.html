@@ -1,0 +1,58 @@
+<main class="page">
+  <div class="header">
+    <div class="headerTop">
+      <div class="titleGroup">
+        <p class="titleLabel">Browse</p>
+        <h1 class="title">Collection</h1>
+      </div>
+      <form (ngSubmit)="handleSearch($event)" class="searchForm">
+        <input
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+          name="search"
+          placeholder="Search products..."
+          class="searchInput"
+        />
+        <button type="submit" class="searchBtn">Search</button>
+      </form>
+    </div>
+    <div class="cats">
+      @for (c of categories; track c) {
+        <button
+          type="button"
+          (click)="selectCategory(c)"
+          [class]="'catBtn' + (isCategoryActive(c) ? ' active' : '')"
+        >{{ c }}</button>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="loadingDots">
+        <div class="loadingDot"></div>
+        <div class="loadingDot"></div>
+        <div class="loadingDot"></div>
+      </div>
+    </div>
+  } @else if (products().length === 0) {
+    <div class="empty">No products found.</div>
+  } @else {
+    <div class="grid">
+      @for (p of products(); track p._id) {
+        <app-product-card [product]="p" />
+      }
+    </div>
+    @if (pages() > 1) {
+      <div class="pagination">
+        @for (p of pageRange(); track p) {
+          <button
+            type="button"
+            (click)="setPage(p)"
+            [class]="'pageBtn' + (page() === p ? ' activePage' : '')"
+          >{{ p }}</button>
+        }
+      </div>
+    }
+  }
+</main>

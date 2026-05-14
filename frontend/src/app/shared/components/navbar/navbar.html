@@ -1,0 +1,73 @@
+<nav class="nav">
+  <a routerLink="/" class="logo">NOOR</a>
+
+  <div class="links">
+    <a routerLink="/products">Shop</a>
+    @if (auth.isAdmin()) {
+      <a routerLink="/admin">Dashboard</a>
+    }
+  </div>
+
+  <div class="actions">
+    <a routerLink="/cart" class="cartBtn">
+      <span>Cart</span>
+      @if (cart.itemCount() > 0) {
+        <span class="badge">{{ cart.itemCount() }}</span>
+      }
+    </a>
+
+    @if (auth.user()) {
+      <div class="userMenu">
+        <button (click)="toggleDropdown()" class="userBtn">{{ firstName() }}</button>
+        @if (dropdownOpen()) {
+          <button aria-label="Close menu" class="dropdownBackdrop" (click)="closeDropdown()"></button>
+          <div class="dropdown">
+            <a routerLink="/orders" (click)="closeDropdown()">My Orders</a>
+            <a routerLink="/profile" (click)="closeDropdown()">Profile</a>
+            <button (click)="logout()">Sign Out</button>
+          </div>
+        }
+      </div>
+    } @else {
+      <a routerLink="/login" class="loginBtn">Sign In</a>
+    }
+  </div>
+
+  <div class="mobileRight">
+    <a routerLink="/cart" class="mobileCartBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      @if (cart.itemCount() > 0) {
+        <span class="badge">{{ cart.itemCount() }}</span>
+      }
+    </a>
+    <button class="hamburger" [class.hamburgerOpen]="mobileOpen()" (click)="toggleMobile()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobileMenu" [class.mobileMenuOpen]="mobileOpen()">
+  <div class="mobileMenuInner">
+    <nav class="mobileLinks">
+      <a routerLink="/products" class="mobileLink">Shop</a>
+      @if (auth.isAdmin()) { <a routerLink="/admin" class="mobileLink">Dashboard</a> }
+      @if (auth.user()) { <a routerLink="/orders" class="mobileLink">My Orders</a> }
+      @if (auth.user()) { <a routerLink="/profile" class="mobileLink">Profile</a> }
+    </nav>
+    <div class="mobileDivider"></div>
+    <div class="mobileAuth">
+      @if (auth.user()) {
+        <p class="mobileUserName">{{ auth.user()?.name }}</p>
+        <button (click)="logout()" class="mobileSignOut">Sign Out</button>
+      } @else {
+        <a routerLink="/login" class="mobilePrimaryBtn">Sign In</a>
+        <a routerLink="/register" class="mobileGhostBtn">Create Account</a>
+      }
+    </div>
+  </div>
+</div>
+@if (mobileOpen()) {
+  <button aria-label="Close mobile menu" class="overlay" (click)="closeMobile()"></button>
+}

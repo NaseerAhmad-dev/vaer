@@ -1,0 +1,579 @@
+<div class="layout">
+  <!-- ── Sidebar ────────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebarBrand">
+      <span class="brandText">NOOR</span>
+      <span class="brandSub">Admin</span>
+    </div>
+    <nav class="sidebarNav">
+      <button class="navItem" [class.navActive]="activeTab() === 'dashboard'" (click)="setTab('dashboard')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="navItem" [class.navActive]="activeTab() === 'orders'" (click)="setTab('orders')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+          <path d="M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/>
+          <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>
+        </svg>
+        <span>Orders</span>
+      </button>
+      <button class="navItem" [class.navActive]="activeTab() === 'products'" (click)="setTab('products')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>Products</span>
+      </button>
+      <button class="navItem" [class.navActive]="activeTab() === 'inventory'" (click)="setTab('inventory')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        <span>Inventory</span>
+      </button>
+      <button class="navItem" [class.navActive]="activeTab() === 'customers'" (click)="setTab('customers')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Customers</span>
+      </button>
+    </nav>
+    <div class="sidebarFooter">
+      <span class="muted" style="font-size:11px">Noor Commerce &copy; 2025</span>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────────────────────────────── -->
+  <main class="main">
+    <header class="mainHeader">
+      <div>
+        <h1 class="pageHeading">{{ currentTabTitle }}</h1>
+        <p class="pageDate">{{ todayStr }}</p>
+      </div>
+    </header>
+
+    @if (loading()) {
+      <div class="loadingState">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <p class="muted">Loading dashboard&hellip;</p>
+      </div>
+    } @else {
+      <div class="content">
+
+        <!-- ── DASHBOARD ─────────────────────────────────────────────── -->
+        @if (activeTab() === 'dashboard') {
+          <!-- KPI Cards -->
+          <div class="kpiGrid">
+            @for (kpi of dashKpis(); track kpi.label) {
+              <div class="kpiCard">
+                <div class="kpiIcon"><i [class]="kpi.icon" style="font-size:18px"></i></div>
+                <div>
+                  <p class="kpiLabel">{{ kpi.label }}</p>
+                  <p class="kpiValue">{{ kpi.value }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Chart Row -->
+          <div class="chartRow">
+            <!-- Revenue line chart -->
+            <div class="card">
+              <div class="cardHeaderInner">
+                <span class="cardTitle">Revenue by Month</span>
+              </div>
+              <div class="chartBody">
+                @if (revenueChartData()) {
+                  <p-chart type="line"
+                    [data]="revenueChartData()"
+                    [options]="revenueChartOptions()"
+                    styleClass="chartArea">
+                  </p-chart>
+                }
+              </div>
+            </div>
+
+            <!-- Order Status doughnut -->
+            <div class="card">
+              <div class="cardHeaderInner">
+                <span class="cardTitle">Order Status</span>
+              </div>
+              <div class="chartBody">
+                @if (statusChartData()) {
+                  <p-chart type="doughnut"
+                    [data]="statusChartData()"
+                    [options]="statusChartOptions()"
+                    styleClass="chartAreaSm">
+                  </p-chart>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Products bar chart -->
+          <div class="card">
+            <div class="cardHeaderInner">
+              <span class="cardTitle">Top Products by Revenue</span>
+            </div>
+            <div class="chartBody">
+              @if (topProductsChartData()) {
+                <p-chart type="bar"
+                  [data]="topProductsChartData()"
+                  [options]="topProductsChartOptions()"
+                  styleClass="chartArea">
+                </p-chart>
+              }
+            </div>
+          </div>
+
+          <!-- Recent Orders -->
+          <div class="card">
+            <div class="cardHeaderInner">
+              <span class="cardTitle">Recent Orders</span>
+            </div>
+            <div class="tableWrap">
+              <p-table [value]="orders().slice(0, 8)" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr class="tableHead">
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-o>
+                  <tr class="tableRow">
+                    <td class="mono">{{ orderId(o._id) }}</td>
+                    <td>{{ o.user?.name || '—' }}</td>
+                    <td class="muted">{{ formatDate(o.createdAt) }}</td>
+                    <td class="bold">{{ formatCurrency(o.total) }}</td>
+                    <td><p-tag [value]="o.status" [severity]="getSeverity(o.status)"></p-tag></td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr><td colspan="5" class="empty">No orders yet</td></tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        }
+
+        <!-- ── ORDERS ──────────────────────────────────────────────── -->
+        @if (activeTab() === 'orders') {
+          <div class="card">
+            <div class="cardHeaderInner cardHeaderRow">
+              <span class="pageTitle">All Orders</span>
+              <input class="searchInput" placeholder="Search ID or customer&hellip;"
+                [value]="orderSearch()"
+                (input)="onOrderSearchChange($any($event.target).value)" />
+            </div>
+            <!-- Status filter tabs -->
+            <div class="statusTabs">
+              @for (tab of statusTabOptions; track tab.value) {
+                <button class="statusTab"
+                  [class.statusTabActive]="orderStatus() === tab.value"
+                  [style.border-color]="orderStatus() === tab.value && tab.value !== 'all' ? statusColors[tab.value] : ''"
+                  [style.color]="orderStatus() === tab.value && tab.value !== 'all' ? statusColors[tab.value] : ''"
+                  (click)="onOrderStatusFilter(tab.value)">
+                  {{ tab.label }}
+                  <span class="statusCount">{{ statusCount(tab.value) }}</span>
+                </button>
+              }
+            </div>
+            <div class="tableWrap">
+              <p-table [value]="pagedOrders()" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr class="tableHead">
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-o>
+                  <tr class="tableRow">
+                    <td class="mono">{{ orderId(o._id) }}</td>
+                    <td>
+                      <div class="cellStack">
+                        <span>{{ o.user?.name || '—' }}</span>
+                        @if (o.user?.email) {
+                          <span class="muted" style="font-size:11px">{{ o.user.email }}</span>
+                        }
+                      </div>
+                    </td>
+                    <td class="muted">{{ formatDate(o.createdAt) }}</td>
+                    <td class="muted">{{ o.items?.length || 0 }}</td>
+                    <td class="bold">{{ formatCurrency(o.total) }}</td>
+                    <td><p-tag [value]="o.status" [severity]="getSeverity(o.status)"></p-tag></td>
+                    <td>
+                      <p-select
+                        [options]="statusSelectOptions"
+                        [ngModel]="o.status"
+                        (ngModelChange)="setOrderStatus(o._id, $event)"
+                        optionLabel="label"
+                        optionValue="value"
+                        styleClass="selectSm">
+                      </p-select>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr><td colspan="7" class="empty">No orders found</td></tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="tableFooter">
+              <span class="muted">{{ filteredOrders().length }} order{{ filteredOrders().length !== 1 ? 's' : '' }}</span>
+              @if (orderTotalPages() > 1) {
+                <div class="pagination">
+                  <button class="pageBtn" [disabled]="orderPage() === 1" (click)="prevOrderPage()">&#8249;</button>
+                  @for (n of pageRange(orderTotalPages()); track n) {
+                    <button class="pageBtn" [class.pageBtnActive]="orderPage() === n" (click)="goOrderPage(n)">{{ n }}</button>
+                  }
+                  <button class="pageBtn" [disabled]="orderPage() === orderTotalPages()" (click)="nextOrderPage()">&#8250;</button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ── PRODUCTS ────────────────────────────────────────────── -->
+        @if (activeTab() === 'products') {
+          <div class="card">
+            <div class="cardHeaderInner cardHeaderRow">
+              <span class="pageTitle">Products</span>
+              <div class="filterRow">
+                <input class="searchInput" placeholder="Search by name or category&hellip;"
+                  [value]="productSearch()"
+                  (input)="onProductSearchChange($any($event.target).value)" />
+                <button class="addBtn" (click)="openAdd()">+ Add Product</button>
+              </div>
+            </div>
+            <div class="tableWrap">
+              <p-table [value]="pagedProducts()" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr class="tableHead">
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Featured</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-p>
+                  <tr class="tableRow">
+                    <td>
+                      <div class="productCell">
+                        @if (p.images?.[0]) {
+                          <img [src]="p.images[0]" [alt]="p.name" class="thumb" />
+                        } @else {
+                          <div class="thumbPlaceholder">&#9672;</div>
+                        }
+                        <div class="cellStack">
+                          <span class="productName">{{ p.name }}</span>
+                          <span class="muted" style="font-size:11px">{{ orderId(p._id) }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="catBadge">{{ p.category }}</span></td>
+                    <td class="bold">{{ formatCurrency(p.price) }}</td>
+                    <td>
+                      <span [class]="stockClass(p.stock)">{{ p.stock }}</span>
+                    </td>
+                    <td>
+                      @if (p.isFeatured) {
+                        <span class="featuredStar" title="Featured">&#10022;</span>
+                      } @else {
+                        <span class="muted">—</span>
+                      }
+                    </td>
+                    <td>
+                      <div class="actionBtns">
+                        <button class="editBtn" (click)="openEdit(p)">Edit</button>
+                        <button class="deleteBtn" (click)="openDelete(p)">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr><td colspan="6" class="empty">No products found</td></tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="tableFooter">
+              <span class="muted">{{ filteredProducts().length }} product{{ filteredProducts().length !== 1 ? 's' : '' }}</span>
+              @if (productTotalPages() > 1) {
+                <div class="pagination">
+                  <button class="pageBtn" [disabled]="productPage() === 1" (click)="prevProductPage()">&#8249;</button>
+                  @for (n of pageRange(productTotalPages()); track n) {
+                    <button class="pageBtn" [class.pageBtnActive]="productPage() === n" (click)="goProductPage(n)">{{ n }}</button>
+                  }
+                  <button class="pageBtn" [disabled]="productPage() === productTotalPages()" (click)="nextProductPage()">&#8250;</button>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- ── INVENTORY ───────────────────────────────────────────── -->
+        @if (activeTab() === 'inventory') {
+          <!-- Inventory KPI cards -->
+          <div class="kpiGrid">
+            @for (kpi of invKpis(); track kpi.label) {
+              <div class="kpiCard">
+                <div>
+                  <p class="kpiLabel">{{ kpi.label }}</p>
+                  <p class="kpiValue" [style.color]="kpi.color">{{ kpi.value }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="card">
+            <div class="cardHeaderInner cardHeaderRow">
+              <span class="pageTitle">Stock Levels</span>
+              <input class="searchInput" placeholder="Search products&hellip;"
+                [value]="invSearch()"
+                (input)="invSearch.set($any($event.target).value)" />
+            </div>
+            <div class="tableWrap">
+              <p-table [value]="filteredInventory()" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr class="tableHead">
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Level</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-p>
+                  <tr class="tableRow">
+                    <td class="productName">{{ p.name }}</td>
+                    <td><span class="catBadge">{{ p.category }}</span></td>
+                    <td><span [style.color]="stockColor(p.stock)" style="font-weight:600">{{ p.stock }}</span></td>
+                    <td style="width:140px">
+                      <div class="stockBar">
+                        <div class="stockBarFill"
+                          [style.width.%]="stockPct(p.stock)"
+                          [style.background]="stockColor(p.stock)">
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge" [style.--c]="stockColor(p.stock)">{{ stockLabel(p.stock) }}</span>
+                    </td>
+                    <td>
+                      @if (editingStock() === p._id) {
+                        <div class="inlineEdit">
+                          <input type="number" min="0"
+                            class="inlineInput"
+                            [value]="newStock()"
+                            (input)="newStock.set($any($event.target).value)"
+                            (keydown.enter)="saveStock(p._id)"
+                            (keydown.escape)="cancelEditStock()"
+                            autofocus />
+                          <button class="editBtn" (click)="saveStock(p._id)">Save</button>
+                          <button class="deleteBtn" (click)="cancelEditStock()">&#10005;</button>
+                        </div>
+                      } @else {
+                        <button class="editBtn" (click)="startEditStock(p)">Edit</button>
+                      }
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr><td colspan="6" class="empty">No products found</td></tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        }
+
+        <!-- ── CUSTOMERS ───────────────────────────────────────────── -->
+        @if (activeTab() === 'customers') {
+          <div class="card">
+            <div class="cardHeaderInner cardHeaderRow">
+              <span class="pageTitle">Customers</span>
+              <input class="searchInput" placeholder="Search by name or email&hellip;"
+                [value]="customerSearch()"
+                (input)="customerSearch.set($any($event.target).value)" />
+            </div>
+            <div class="tableWrap">
+              <p-table [value]="filteredCustomers()" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr class="tableHead">
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Joined</th>
+                    <th>Orders</th>
+                    <th>Total Spent</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-c>
+                  <tr class="tableRow">
+                    <td>
+                      <div class="customerCell">
+                        <div class="avatar">{{ customerInitial(c.name) }}</div>
+                        <span class="bold">{{ c.name }}</span>
+                      </div>
+                    </td>
+                    <td class="muted">{{ c.email }}</td>
+                    <td class="muted">{{ formatDate(c.createdAt) }}</td>
+                    <td class="bold">{{ orderCountMap()[c._id] || 0 }}</td>
+                    <td class="bold">{{ formatCurrency(spendMap()[c._id] || 0) }}</td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr><td colspan="5" class="empty">No customers found</td></tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="tableFooter">
+              <span class="muted">{{ filteredCustomers().length }} customer{{ filteredCustomers().length !== 1 ? 's' : '' }}</span>
+            </div>
+          </div>
+        }
+
+      </div>
+    }
+  </main>
+</div>
+
+<!-- ── Add / Edit Product Dialog ───────────────────────────────────────── -->
+<p-dialog
+  [header]="isEditMode() ? 'Edit Product' : 'Add New Product'"
+  [visible]="showProductModal()"
+  (visibleChange)="showProductModal.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="productDialog"
+  [style]="{ width: '600px', maxWidth: '95vw' }">
+
+  <ng-template pTemplate="content">
+    @if (formErr()) {
+      <div class="formError">{{ formErr() }}</div>
+    }
+    <form (ngSubmit)="saveProduct()" #productForm="ngForm">
+      <div class="formGrid">
+        <!-- Name -->
+        <div class="formGroup">
+          <label class="label">Name <span class="req">*</span></label>
+          <input pInputText
+            [value]="form().name"
+            (input)="setField('name', $any($event.target).value)"
+            placeholder="Product name" />
+        </div>
+        <!-- Category -->
+        <div class="formGroup">
+          <label class="label">Category <span class="req">*</span></label>
+          <p-select
+            [options]="categories"
+            [ngModel]="form().category"
+            (ngModelChange)="setField('category', $event)"
+            name="category"
+            styleClass="w-full">
+          </p-select>
+        </div>
+        <!-- Price -->
+        <div class="formGroup">
+          <label class="label">Price (USD) <span class="req">*</span></label>
+          <input pInputText type="number" min="0" step="0.01"
+            [value]="form().price"
+            (input)="setField('price', $any($event.target).value)"
+            placeholder="0.00" />
+        </div>
+        <!-- Stock -->
+        <div class="formGroup">
+          <label class="label">Stock <span class="req">*</span></label>
+          <input pInputText type="number" min="0"
+            [value]="form().stock"
+            (input)="setField('stock', $any($event.target).value)"
+            placeholder="0" />
+        </div>
+        <!-- Description -->
+        <div class="formGroup fullWidth">
+          <label class="label">Description</label>
+          <textarea rows="3"
+            [value]="form().description"
+            (input)="setField('description', $any($event.target).value)"
+            placeholder="Product description&hellip;">
+          </textarea>
+        </div>
+        <!-- Images -->
+        <div class="formGroup fullWidth">
+          <label class="label">Image URLs <span class="hint">(comma-separated)</span></label>
+          <input pInputText
+            [value]="form().images"
+            (input)="setField('images', $any($event.target).value)"
+            placeholder="https://&hellip;" />
+        </div>
+        <!-- Tags -->
+        <div class="formGroup">
+          <label class="label">Tags <span class="hint">(comma-separated)</span></label>
+          <input pInputText
+            [value]="form().tags"
+            (input)="setField('tags', $any($event.target).value)"
+            placeholder="organic, premium" />
+        </div>
+        <!-- Featured -->
+        <div class="formGroup">
+          <label class="checkLabel">
+            <input type="checkbox"
+              [checked]="form().isFeatured"
+              (change)="setField('isFeatured', $any($event.target).checked)" />
+            <span>Featured on Homepage</span>
+          </label>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button class="cancelBtnLg" (click)="closeProductModal()" [disabled]="saving()">Cancel</button>
+    <button class="saveBtnLg" (click)="saveProduct()" [disabled]="saving()">
+      {{ saving() ? 'Saving&hellip;' : (isEditMode() ? 'Save Changes' : 'Add Product') }}
+    </button>
+  </ng-template>
+</p-dialog>
+
+<!-- ── Delete Confirm Dialog ───────────────────────────────────────────── -->
+<p-dialog
+  header="Delete Product"
+  [visible]="showDeleteModal()"
+  (visibleChange)="showDeleteModal.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="productDialog"
+  [style]="{ width: '420px', maxWidth: '95vw' }">
+
+  <ng-template pTemplate="content">
+    <p style="color: var(--muted-md); line-height: 1.7">
+      Delete <strong style="color: var(--text)">{{ deleteProductName() }}</strong>? This cannot be undone.
+    </p>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button class="cancelBtnLg" (click)="closeDeleteModal()">Cancel</button>
+    <button class="deleteBtnLg" (click)="confirmDelete()">Delete</button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,53 @@
+@if (cart.items().length === 0) {
+  <div class="empty">
+    <p>Your cart is empty.</p>
+    <a routerLink="/products" class="shopBtn">Continue Shopping</a>
+  </div>
+} @else {
+  <div class="page">
+    <h1 class="title">Your Cart</h1>
+    <div class="layout">
+
+      <div class="items">
+        @for (item of cart.items(); track item._id) {
+          <div class="item">
+            <img [src]="itemImage(item.images)" [alt]="item.name" class="img" />
+            <div class="info">
+              <p class="name">{{ item.name }}</p>
+              <p class="price">${{ item.price.toFixed(2) }}</p>
+            </div>
+            <div class="qty">
+              <button (click)="updateQty(item._id, item.qty - 1)">−</button>
+              <span>{{ item.qty }}</span>
+              <button (click)="updateQty(item._id, item.qty + 1)">+</button>
+            </div>
+            <button (click)="removeItem(item._id)" class="remove">✕</button>
+          </div>
+        }
+      </div>
+
+      <div class="summary">
+        <h2 class="summaryTitle">Order Summary</h2>
+        <div class="summaryRow">
+          <span>Subtotal</span>
+          <span>${{ cart.subtotal().toFixed(2) }}</span>
+        </div>
+        <div class="summaryRow">
+          <span>Shipping</span>
+          <span>{{ shipping() === 0 ? 'Free' : '$' + shipping().toFixed(2) }}</span>
+        </div>
+        @if (shipping() > 0) {
+          <p class="freeNote">Add ${{ amountToFreeShipping() }} more for free shipping</p>
+        }
+        <div class="summaryRow total">
+          <span>Total</span>
+          <span>${{ total().toFixed(2) }}</span>
+        </div>
+        <button class="checkoutBtn" (click)="proceedToCheckout()">
+          {{ auth.user() ? 'Proceed to Checkout' : 'Sign In to Checkout' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}

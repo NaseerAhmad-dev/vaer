@@ -1,0 +1,102 @@
+<div class="page">
+  <div class="layout">
+    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="avatarWrap">
+        <div class="avatar">{{ initials() }}</div>
+        <p class="userName">{{ auth.user()?.name }}</p>
+        <p class="userEmail">{{ auth.user()?.email }}</p>
+      </div>
+      <nav class="tabNav">
+        <button class="tabBtn" [class.tabActive]="activeTab() === 'info'" (click)="setTab('info')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Account Info
+        </button>
+        <button class="tabBtn" [class.tabActive]="activeTab() === 'password'" (click)="setTab('password')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          Change Password
+        </button>
+      </nav>
+    </aside>
+
+    <!-- ── Content ──────────────────────────────────────────────────────── -->
+    <div class="content">
+      @if (saved()) {
+        <div class="successBanner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Changes saved successfully.
+        </div>
+      }
+
+      @if (error()) {
+        <div class="errorBanner">{{ error() }}</div>
+      }
+
+      <!-- Account Info Tab -->
+      @if (activeTab() === 'info') {
+        <div class="section">
+          <h2 class="sectionTitle">Account Information</h2>
+          <p class="sectionSub">Update your name and email address.</p>
+          <form [formGroup]="infoForm" (ngSubmit)="saveInfo()" class="form">
+            <div class="formGroup">
+              <label class="label">Full Name</label>
+              <input formControlName="name" type="text" class="input" placeholder="Your name" />
+              @if (infoForm.get('name')?.touched && infoForm.get('name')?.invalid) {
+                <span class="fieldErr">Name is required</span>
+              }
+            </div>
+            <div class="formGroup">
+              <label class="label">Email Address</label>
+              <input formControlName="email" type="email" class="input" placeholder="you@example.com" />
+              @if (infoForm.get('email')?.touched && infoForm.get('email')?.invalid) {
+                <span class="fieldErr">Valid email is required</span>
+              }
+            </div>
+            <div class="formActions">
+              <button type="submit" class="saveBtn" [disabled]="saving() || infoForm.invalid">
+                {{ saving() ? 'Saving…' : 'Save Changes' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Change Password Tab -->
+      @if (activeTab() === 'password') {
+        <div class="section">
+          <h2 class="sectionTitle">Change Password</h2>
+          <p class="sectionSub">Choose a strong password of at least 6 characters.</p>
+          <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="form">
+            <div class="formGroup">
+              <label class="label">New Password</label>
+              <input formControlName="next" type="password" class="input" placeholder="Min. 6 characters" />
+              @if (passwordForm.get('next')?.touched && passwordForm.get('next')?.errors?.['minlength']) {
+                <span class="fieldErr">Password must be at least 6 characters</span>
+              }
+            </div>
+            <div class="formGroup">
+              <label class="label">Confirm New Password</label>
+              <input formControlName="confirm" type="password" class="input" placeholder="Repeat password" />
+              @if (passwordForm.touched && passwordForm.hasError('passwordsMismatch')) {
+                <span class="fieldErr">Passwords do not match</span>
+              }
+            </div>
+            <div class="formActions">
+              <button type="submit" class="saveBtn" [disabled]="saving() || passwordForm.invalid">
+                {{ saving() ? 'Saving…' : 'Update Password' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+    </div>
+  </div>
+</div>

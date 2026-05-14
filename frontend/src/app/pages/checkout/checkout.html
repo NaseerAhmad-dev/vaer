@@ -1,0 +1,156 @@
+@if (cart.items().length === 0 && step() !== 2) {
+  <div class="empty">
+    <span>◈</span>
+    <h2>Your cart is empty</h2>
+    <a routerLink="/products" class="emptyBtn">Continue Shopping</a>
+  </div>
+} @else {
+  <div class="page">
+
+    <!-- Progress -->
+    <div class="progress">
+      @for (s of steps; track s; let i = $index) {
+        <div class="progressStep" [class.progressActive]="i <= step()">
+          <div class="progressDot">{{ i < step() ? '✓' : i + 1 }}</div>
+          <span>{{ s }}</span>
+        </div>
+        @if (i < steps.length - 1) {
+          <div class="progressLine" [class.progressLineDone]="i < step()"></div>
+        }
+      }
+    </div>
+
+    <!-- Step 0 — Shipping -->
+    @if (step() === 0) {
+      <div class="layout">
+        <div class="formWrap">
+          <h2 class="stepTitle">Shipping Address</h2>
+          <form class="form" [formGroup]="shippingForm" (ngSubmit)="submitShipping()">
+            <div class="row">
+              <div class="field">
+                <label class="label">First Name</label>
+                <input formControlName="firstName" placeholder="John" />
+              </div>
+              <div class="field">
+                <label class="label">Last Name</label>
+                <input formControlName="lastName" placeholder="Doe" />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Email</label>
+              <input formControlName="email" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label class="label">Street Address</label>
+              <input formControlName="address" placeholder="123 Main St" />
+            </div>
+            <div class="row">
+              <div class="field">
+                <label class="label">City</label>
+                <input formControlName="city" placeholder="New York" />
+              </div>
+              <div class="field">
+                <label class="label">ZIP Code</label>
+                <input formControlName="zip" placeholder="10001" />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Country</label>
+              <input formControlName="country" placeholder="United States" />
+            </div>
+            <button type="submit" class="nextBtn">Continue to Review →</button>
+          </form>
+        </div>
+
+        <!-- Order Summary -->
+        <aside class="summary">
+          <h3 class="summaryTitle">Order Summary</h3>
+          <div class="summaryItems">
+            @for (item of cart.items(); track item._id) {
+              <div class="summaryItem">
+                <img [src]="itemImage(item.images)" [alt]="item.name" class="summaryImg" />
+                <div class="summaryItemInfo">
+                  <p class="summaryItemName">{{ item.name }}</p>
+                  <p class="summaryItemQty">×{{ item.qty }}</p>
+                </div>
+                <p class="summaryItemPrice">${{ (item.price * item.qty).toFixed(2) }}</p>
+              </div>
+            }
+          </div>
+          <div class="summaryRows">
+            <div class="summaryRow"><span>Subtotal</span><span>${{ cart.subtotal().toFixed(2) }}</span></div>
+            <div class="summaryRow"><span>Shipping</span><span>{{ shipping() === 0 ? 'Free' : '$' + shipping().toFixed(2) }}</span></div>
+            <div class="summaryRow summaryTotal"><span>Total</span><span>${{ total().toFixed(2) }}</span></div>
+          </div>
+        </aside>
+      </div>
+    }
+
+    <!-- Step 1 — Review -->
+    @if (step() === 1) {
+      <div class="layout">
+        <div class="formWrap">
+          <h2 class="stepTitle">Review Order</h2>
+          <div class="reviewAddress">
+            <span class="reviewLabel">Shipping to</span>
+            <p>{{ f['firstName'].value }} {{ f['lastName'].value }}</p>
+            <p>{{ f['address'].value }}, {{ f['city'].value }} {{ f['zip'].value }}</p>
+            <p>{{ f['country'].value }}</p>
+            <button class="editBtn" type="button" (click)="goBack()">Edit</button>
+          </div>
+          <div class="reviewNote">
+            <span class="reviewLabel">Payment</span>
+            <p>Cash on Delivery (COD)</p>
+          </div>
+          <div class="reviewActions">
+            <button class="backBtn" type="button" (click)="goBack()">← Back</button>
+            <button class="placeBtn" type="button" (click)="placeOrder()" [disabled]="placing()">
+              {{ placing() ? 'Placing...' : 'Place Order' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <aside class="summary">
+          <h3 class="summaryTitle">Order Summary</h3>
+          <div class="summaryItems">
+            @for (item of cart.items(); track item._id) {
+              <div class="summaryItem">
+                <img [src]="itemImage(item.images)" [alt]="item.name" class="summaryImg" />
+                <div class="summaryItemInfo">
+                  <p class="summaryItemName">{{ item.name }}</p>
+                  <p class="summaryItemQty">×{{ item.qty }}</p>
+                </div>
+                <p class="summaryItemPrice">${{ (item.price * item.qty).toFixed(2) }}</p>
+              </div>
+            }
+          </div>
+          <div class="summaryRows">
+            <div class="summaryRow"><span>Subtotal</span><span>${{ cart.subtotal().toFixed(2) }}</span></div>
+            <div class="summaryRow"><span>Shipping</span><span>{{ shipping() === 0 ? 'Free' : '$' + shipping().toFixed(2) }}</span></div>
+            <div class="summaryRow summaryTotal"><span>Total</span><span>${{ total().toFixed(2) }}</span></div>
+          </div>
+        </aside>
+      </div>
+    }
+
+    <!-- Step 2 — Confirmed -->
+    @if (step() === 2) {
+      <div class="confirmed">
+        <span class="confirmedIcon">✦</span>
+        <h2 class="confirmedTitle">Order Confirmed!</h2>
+        <p class="confirmedSub">
+          Thank you for your order. We'll send a confirmation to <strong>{{ f['email'].value }}</strong>.
+        </p>
+        @if (orderId()) {
+          <p class="confirmedId">Order ID: <span>{{ shortOrderId(orderId()!) }}</span></p>
+        }
+        <div class="confirmedActions">
+          <a routerLink="/orders" class="ordersBtn">View My Orders</a>
+          <a routerLink="/products" class="shopMoreBtn">Continue Shopping</a>
+        </div>
+      </div>
+    }
+
+  </div>
+}

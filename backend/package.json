@@ -1,7 +1,7 @@
 {
-  "name": "vaer-backend",
+  "name": "noor-backend",
   "version": "1.0.0",
-  "description": "Vaer — your valley, your store. Home-grown ecommerce API.",
+  "description": "Noor — your valley, your store. Home-grown ecommerce API.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

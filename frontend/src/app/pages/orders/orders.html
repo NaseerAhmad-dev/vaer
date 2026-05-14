@@ -1,0 +1,84 @@
+@if (loading()) {
+  <div class="loading">
+    <div class="loadingDots">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+} @else {
+  <div class="page">
+    <div class="header">
+      <p class="headerLabel">Account</p>
+      <h1 class="title">My Orders</h1>
+    </div>
+
+    @if (orders().length === 0) {
+      <div class="empty">
+        <span class="emptyIcon">◈</span>
+        <h2>No orders yet</h2>
+        <p>When you place an order, it will appear here.</p>
+        <a routerLink="/products" class="shopBtn">Start Shopping</a>
+      </div>
+    } @else {
+      <div class="list">
+        @for (order of orders(); track order._id) {
+          <div class="orderCard">
+
+            <!-- Top row: order ID + date + status badge -->
+            <div class="orderTop">
+              <div>
+                <p class="orderId">Order #{{ formatOrderId(order._id) }}</p>
+                <p class="orderDate">{{ order.createdAt | date:'longDate' }}</p>
+              </div>
+              <span
+                class="statusBadge"
+                [style.color]="getStatusConfig(order.status).color"
+                [style.border-color]="getStatusConfig(order.status).color + '40'"
+              >
+                {{ getStatusConfig(order.status).label }}
+              </span>
+            </div>
+
+            <!-- Items -->
+            <div class="orderItems">
+              @for (item of order.items; track $index) {
+                <div class="orderItem">
+                  <img
+                    [src]="getItemImage(item)"
+                    [alt]="item.product?.name || 'Product'"
+                    class="itemImg"
+                  />
+                  <div class="itemInfo">
+                    <p class="itemName">{{ item.product?.name || 'Product' }}</p>
+                    <p class="itemQty">Qty: {{ item.qty }}</p>
+                  </div>
+                  <p class="itemPrice">${{ (item.price * item.qty).toFixed(2) }}</p>
+                </div>
+              }
+            </div>
+
+            <!-- Footer: progress timeline + total -->
+            <div class="orderFooter">
+              <div class="orderProgress">
+                @for (step of timelineSteps; track step; let i = $index) {
+                  <div class="step" [class.stepDone]="isStepDone(order, i)">
+                    <div class="stepDot"></div>
+                    <span>{{ statusConfig[step].label }}</span>
+                  </div>
+                  @if (i < timelineSteps.length - 1) {
+                    <div class="stepLine" [class.stepLineDone]="isLineDone(order, i)"></div>
+                  }
+                }
+              </div>
+              <p class="orderTotal">
+                Total: <strong>${{ order.total?.toFixed(2) }}</strong>
+              </p>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

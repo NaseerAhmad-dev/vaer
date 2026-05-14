@@ -1,0 +1,23 @@
+<div class="card">
+  <a [routerLink]="['/products', product._id]" class="imgWrap">
+    <img [src]="img" [alt]="product.name" class="img" loading="lazy" />
+    @if (product.stock === 0) {
+      <span class="outOfStock">Out of Stock</span>
+    }
+    <div class="quickAdd">
+      <button class="quickAddBtn" (click)="addToCart($event)" [disabled]="product.stock === 0">
+        Quick Add
+      </button>
+    </div>
+  </a>
+  <div class="info">
+    <p class="category">{{ product.category }}</p>
+    <a [routerLink]="['/products', product._id]" class="name">{{ product.name }}</a>
+    <div class="bottom">
+      <span class="price">${{ product.price.toFixed(2) }}</span>
+      <button class="addBtn" (click)="addToCart()" [disabled]="product.stock === 0">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>

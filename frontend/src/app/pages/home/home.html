@@ -1,0 +1,223 @@
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="heroRing"></div>
+    <div class="heroRing"></div>
+    <div class="heroInner">
+      <p class="heroEyebrow">Kashmir · India · Worldwide</p>
+      <h1 class="heroTitle">NOOR</h1>
+      <p class="heroTagline">Your valley, your store.</p>
+      <p class="heroDesc">
+        A home-grown marketplace founded by Naseer Ahmad — bringing you handpicked products with the warmth and trust of a neighbour.
+      </p>
+      <div class="heroBtns">
+        <a routerLink="/products" class="heroBtn">Explore the Store</a>
+        <button class="heroBtnGhost" type="button" (click)="scrollToContact()">Get in Touch</button>
+      </div>
+    </div>
+    <div class="heroScroll">
+      <div class="heroScrollLine"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marqueeStrip">
+    <div class="marqueeInner">
+      @for (item of marqueeItems; track $index) {
+        <span class="marqueeItem">{{ item }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <section class="statsSection">
+    @for (s of stats; track s.label) {
+      <div class="statItem">
+        <span class="statValue">{{ s.value }}</span>
+        <span class="statLabel">{{ s.label }}</span>
+      </div>
+    }
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="sectionHead">
+      <div>
+        <p class="sectionLabel">Browse by</p>
+        <h2 class="sectionTitle">Categories</h2>
+      </div>
+      <a routerLink="/products" class="seeAll">View All →</a>
+    </div>
+    <div class="categoryGrid">
+      @for (cat of categories; track cat.name) {
+        <a [routerLink]="['/products']" [queryParams]="{ category: cat.name }" class="categoryCard">
+          <span class="categoryEmoji">{{ cat.emoji }}</span>
+          <h3 class="categoryName">{{ cat.name }}</h3>
+          <p class="categoryDesc">{{ cat.desc }}</p>
+          <span class="categoryArrow">→</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  @if (featured().length > 0) {
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <p class="sectionLabel">Handpicked for you</p>
+          <h2 class="sectionTitle">Featured</h2>
+        </div>
+        <a routerLink="/products" class="seeAll">View All →</a>
+      </div>
+      <div class="grid">
+        @for (p of featured(); track p._id) {
+          <app-product-card [product]="p" />
+        }
+      </div>
+    </section>
+  }
+
+  <!-- VALUE PROPS -->
+  <section class="section">
+    <div class="valueGrid">
+      @for (v of values; track v.title) {
+        <div class="valueCard">
+          <div class="valueIconWrap">
+            <span class="valueIcon">{{ v.icon }}</span>
+          </div>
+          <h3 class="valueTitle">{{ v.title }}</h3>
+          <p class="valueDesc">{{ v.desc }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonialsSection">
+    <div class="section" style="padding-top: 0">
+      <div class="sectionHead">
+        <div>
+          <p class="sectionLabel">What people say</p>
+          <h2 class="sectionTitle">Testimonials</h2>
+        </div>
+      </div>
+      <div class="testimonialsGrid">
+        @for (t of testimonials; track t.name) {
+          <div class="testimonialCard">
+            <div class="testimonialStars">{{ starsString(t.stars) }}</div>
+            <p class="testimonialText">"{{ t.text }}"</p>
+            <div class="testimonialAuthor">
+              <div class="testimonialAvatar">{{ t.avatar }}</div>
+              <div>
+                <p class="testimonialName">{{ t.name }}</p>
+                <p class="testimonialRole">{{ t.role }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletterSection">
+    <div class="newsletterInner">
+      <p class="newsletterLabel">Stay connected</p>
+      <h2 class="newsletterTitle">Join the Noor Community</h2>
+      <p class="newsletterDesc">
+        Be the first to hear about new arrivals, exclusive deals, and stories from our valley — straight to your inbox.
+      </p>
+      @if (newsletterSent()) {
+        <p class="newsletterSuccess">✦ Welcome to the community — you're in.</p>
+      } @else {
+        <form (ngSubmit)="handleNewsletter($event)" class="newsletterForm">
+          <input
+            type="email"
+            placeholder="Your email address"
+            [ngModel]="newsletterEmail()"
+            (ngModelChange)="newsletterEmail.set($event)"
+            name="newsletterEmail"
+            class="newsletterInput"
+            required
+          />
+          <button type="submit" class="newsletterBtn">Subscribe</button>
+        </form>
+      }
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" #contactSection id="contact">
+    <div class="contactLayout">
+      <div class="contactInfo">
+        <p class="sectionLabel">Get in touch</p>
+        <h2 class="sectionTitle">Contact Us</h2>
+        <p class="contactDesc">
+          Noor is a home-grown store founded by Naseer Ahmad. Questions? Reach us at hello&#64;noor.store
+        </p>
+        <div class="contactDetails">
+          @for (d of contactDetails; track d.label) {
+            <div class="contactDetail">
+              <span class="contactIcon">{{ d.icon }}</span>
+              <div>
+                <p class="contactDetailLabel">{{ d.label }}</p>
+                <p class="contactDetailValue">{{ d.value }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="contactFormWrap">
+        @if (contactSent()) {
+          <div class="contactSuccess">
+            <span class="contactSuccessIcon">✦</span>
+            <h3>Message received</h3>
+            <p>We'll get back to you within 24 hours.</p>
+            <button type="button" (click)="resetContact()" class="contactSuccessBtn">
+              Send another
+            </button>
+          </div>
+        } @else {
+          <form (ngSubmit)="handleContact($event)" class="contactForm">
+            <div class="contactRow">
+              <div class="contactField">
+                <label class="fieldLabel">Name</label>
+                <input
+                  type="text"
+                  placeholder="Your full name"
+                  [value]="contactForm().name"
+                  (input)="updateContactField('name', $any($event.target).value)"
+                  required
+                />
+              </div>
+              <div class="contactField">
+                <label class="fieldLabel">Email</label>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  [value]="contactForm().email"
+                  (input)="updateContactField('email', $any($event.target).value)"
+                  required
+                />
+              </div>
+            </div>
+            <div class="contactField">
+              <label class="fieldLabel">Message</label>
+              <textarea
+                rows="5"
+                placeholder="How can we help you?"
+                [value]="contactForm().message"
+                (input)="updateContactField('message', $any($event.target).value)"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="contactSubmit">Send Message</button>
+          </form>
+        }
+      </div>
+    </div>
+  </section>
+</main>

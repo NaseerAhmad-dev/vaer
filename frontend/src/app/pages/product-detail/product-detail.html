@@ -1,0 +1,99 @@
+@if (loading()) {
+  <div class="loading">
+    <div class="loadingDots">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+} @else if (product()) {
+  <div class="page">
+    <nav class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span>›</span>
+      <a routerLink="/products">Collection</a>
+      <span>›</span>
+      <span>{{ product()!.name }}</span>
+    </nav>
+
+    <div class="layout">
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="mainImg">
+          <img [src]="images()[activeImg()]" [alt]="product()!.name" />
+          @if (product()!.stock === 0) {
+            <div class="outOfStock">Out of Stock</div>
+          }
+        </div>
+        @if (images().length > 1) {
+          <div class="thumbs">
+            @for (img of images(); track img; let i = $index) {
+              <button
+                type="button"
+                [class]="'thumb' + (i === activeImg() ? ' activeThumb' : '')"
+                (click)="setActiveImg(i)"
+              >
+                <img [src]="img" alt="" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Info -->
+      <div class="info">
+        <p class="category">{{ product()!.category }}</p>
+        <h1 class="name">{{ product()!.name }}</h1>
+        <p class="price">${{ formatPrice(product()!.price) }}</p>
+
+        <div class="divider"></div>
+
+        <p class="desc">{{ product()!.description || 'No description available.' }}</p>
+
+        <div class="divider"></div>
+
+        <div class="stockRow">
+          @if (product()!.stock > 0) {
+            <span class="inStock">✓ In Stock ({{ product()!.stock }} available)</span>
+          } @else {
+            <span class="outOfStockText">✕ Out of Stock</span>
+          }
+        </div>
+
+        @if (product()!.stock > 0) {
+          <div class="qtyRow">
+            <span class="qtyLabel">Quantity</span>
+            <div class="qtyControl">
+              <button type="button" (click)="decreaseQty()">−</button>
+              <span>{{ qty() }}</span>
+              <button type="button" (click)="increaseQty()">+</button>
+            </div>
+          </div>
+        }
+
+        <div class="actions">
+          <button
+            type="button"
+            [class]="'addBtn' + (added() ? ' addedBtn' : '')"
+            (click)="handleAdd()"
+            [disabled]="product()!.stock === 0"
+          >
+            {{ added() ? '✓ Added to Cart' : 'Add to Cart' }}
+          </button>
+          <a routerLink="/cart" class="cartLink">View Cart →</a>
+        </div>
+
+        <div class="meta">
+          <div class="metaRow">
+            <span class="metaLabel">SKU</span>
+            <span class="metaValue">{{ sku() }}</span>
+          </div>
+          <div class="metaRow">
+            <span class="metaLabel">Category</span>
+            <span class="metaValue">{{ product()!.category }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,191 @@
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem 6rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────────────────────── */
+.sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: sticky;
+  top: 100px;
+}
+
+.avatarWrap {
+  padding: 2rem 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.avatar {
+  width: 66px; height: 66px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139,0,32,0.15), rgba(196,136,42,0.15));
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.userName {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.userEmail {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabNav {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--muted-md);
+  text-align: left;
+  transition: background var(--transition), color var(--transition);
+}
+
+.tabBtn:hover { background: rgba(139,0,32,0.06); color: var(--text); }
+
+.tabActive {
+  background: rgba(139,0,32,0.1) !important;
+  color: var(--gold) !important;
+}
+
+/* ── Content ───────────────────────────────────────────────────────────────── */
+.content { display: flex; flex-direction: column; gap: 1rem; }
+
+.successBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(72,187,120,0.1);
+  border: 1px solid rgba(72,187,120,0.3);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #48BB78;
+}
+
+.errorBanner {
+  padding: 10px 16px;
+  background: rgba(224,82,82,0.08);
+  border: 1px solid rgba(224,82,82,0.25);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #e05252;
+}
+
+/* ── Section Card ──────────────────────────────────────────────────────────── */
+.section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+.sectionSub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+/* ── Form ──────────────────────────────────────────────────────────────────── */
+.form { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.formGroup { display: flex; flex-direction: column; gap: 6px; }
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted-md);
+}
+
+.input {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input:focus {
+  border-color: var(--gold);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139,0,32,0.07);
+}
+
+.input::placeholder { color: var(--muted); }
+
+.fieldErr {
+  font-size: 11px;
+  color: #e05252;
+  margin-top: 2px;
+}
+
+.formActions { padding-top: 0.5rem; }
+
+.saveBtn {
+  padding: 10px 28px;
+  background: var(--gold);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+.saveBtn:hover:not(:disabled) { background: var(--gold-lt); box-shadow: 0 0 16px var(--gold-glow); }
+.saveBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .page { padding: 2rem 1.25rem 4rem; }
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .section { padding: 1.5rem 1.25rem; }
+}
